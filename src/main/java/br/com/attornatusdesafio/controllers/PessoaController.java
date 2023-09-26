@@ -17,6 +17,7 @@ import br.com.attornatusdesafio.entities.Pessoa;
 import br.com.attornatusdesafio.services.PessoaService;
 import jakarta.validation.Valid;
 
+@
 public class PessoaController {
 	
 	@Autowired
