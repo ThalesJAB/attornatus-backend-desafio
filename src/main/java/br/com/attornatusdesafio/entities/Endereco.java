@@ -27,7 +27,7 @@ public class Endereco implements Serializable{
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Getter private Long id;
+	@Setter @Getter private Long id;
 	
     @NotBlank(message = "Campo LOGRADOURO é requerido")
     @Getter @Setter private String logradouro;

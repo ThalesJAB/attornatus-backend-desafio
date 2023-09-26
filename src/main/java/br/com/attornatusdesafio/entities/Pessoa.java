@@ -51,5 +51,10 @@ public class Pessoa implements Serializable{
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "pessoa_id")
 	@Getter @Setter private List<Endereco> enderecos = new ArrayList<>();
+	
+	
+	public void addEndereco(Endereco endereco) {
+		this.enderecos.add(endereco);
+	}
 
 }
