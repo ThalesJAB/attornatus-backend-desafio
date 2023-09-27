@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>Endereco.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">attornatus-backend-desafio (27 de set. de 2023 03:21:14)</a> &gt; <a href="../../index.html" class="el_group">attornatus-backend-desafio</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">br.com.attornatusdesafio.entities</a> &gt; <span class="el_source">Endereco.java</span></div><h1>Endereco.java</h1><pre class="source lang-java linenums">package br.com.attornatusdesafio.entities;
+
+import java.io.Serializable;
+
+import br.com.attornatusdesafio.entities.enums.TipoEndereco;
+import br.com.attornatusdesafio.entities.interfaces.Cep;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Entity
+<span class="fc" id="L21">@NoArgsConstructor</span>
+<span class="fc" id="L22">@AllArgsConstructor</span>
+<span class="pc bpc" id="L23" title="16 of 22 branches missed.">@EqualsAndHashCode(exclude={&quot;logradouro&quot;, &quot;cep&quot;, &quot;cidade&quot;, &quot;numero&quot;})</span>
+public class Endereco implements Serializable{
+	
+	
+	private static final long serialVersionUID = 1L;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+<span class="fc" id="L30">	@Setter @Getter private Long id;</span>
+	
+    @NotBlank(message = &quot;Campo LOGRADOURO é requerido&quot;)
+<span class="fc" id="L33">    @Getter @Setter private String logradouro;</span>
+
+    @NotBlank(message = &quot;Campo CEP é requerido&quot;)
+    @Cep
+<span class="fc" id="L37">    @Getter @Setter private String cep;</span>
+
+    @NotNull(message = &quot;Campo NÚMERO é requerido&quot;)
+    @Positive(message = &quot;O campo NÚMERO deve ser um número inteiro positivo&quot;)
+<span class="fc" id="L41">    @Getter @Setter private Integer numero;</span>
+
+    @NotBlank(message = &quot;Campo CIDADE é requerido&quot;)
+<span class="fc" id="L44">    @Getter @Setter private String cidade;</span>
+    
+    @NotNull(message = &quot;Campo ENDEREÇO é requerido&quot;)
+<span class="fc" id="L47">    @Getter @Setter private TipoEndereco tipoEndereco;</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span>attornatus-backend-desafio (27 de set. de 2023 03:21:14)</div></body></html>

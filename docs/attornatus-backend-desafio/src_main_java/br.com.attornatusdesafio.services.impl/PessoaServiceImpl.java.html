@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>PessoaServiceImpl.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">attornatus-backend-desafio (27 de set. de 2023 03:21:14)</a> &gt; <a href="../../index.html" class="el_group">attornatus-backend-desafio</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">br.com.attornatusdesafio.services.impl</a> &gt; <span class="el_source">PessoaServiceImpl.java</span></div><h1>PessoaServiceImpl.java</h1><pre class="source lang-java linenums">package br.com.attornatusdesafio.services.impl;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import br.com.attornatusdesafio.entities.Pessoa;
+import br.com.attornatusdesafio.entities.dtos.PessoaDTO;
+import br.com.attornatusdesafio.repositories.PessoaRepository;
+import br.com.attornatusdesafio.services.PessoaService;
+import br.com.attornatusdesafio.services.exceptions.ObjectNotFoundException;
+
+@Service
+<span class="fc" id="L16">public class PessoaServiceImpl implements PessoaService {</span>
+	
+	@Autowired
+	private PessoaRepository repository;
+	
+
+	@Override
+	public List&lt;Pessoa&gt; findAll() {
+<span class="fc" id="L24">		return repository.findAll();</span>
+	}
+
+	@Override
+	public Pessoa findById(Long id) {
+<span class="fc" id="L29">		Optional&lt;Pessoa&gt; obj = repository.findById(id);</span>
+
+<span class="fc" id="L31">		return obj.orElseThrow(() -&gt; new ObjectNotFoundException(</span>
+<span class="fc" id="L32">				&quot;Objeto Não Encontrado! Id: &quot; + id + &quot;, Tipo: &quot; + Pessoa.class.getName()));</span>
+	}
+
+	@Override
+	public Pessoa create(PessoaDTO obj) {
+<span class="fc" id="L37">		Pessoa novaPessoa = new Pessoa();</span>
+<span class="fc" id="L38">		novaPessoa.setNome(obj.getNome());</span>
+<span class="fc" id="L39">		novaPessoa.setDataNascimento(obj.getDataNascimento());</span>
+<span class="fc" id="L40">		return repository.save(novaPessoa);</span>
+	}
+
+	@Override
+	public Pessoa update(Long id, PessoaDTO obj) {
+<span class="fc" id="L45">		Pessoa entity = findById(id);</span>
+
+<span class="fc" id="L47">		entity.setDataNascimento(obj.getDataNascimento());</span>
+<span class="fc" id="L48">		entity.setNome(obj.getNome());</span>
+
+<span class="fc" id="L50">		return repository.save(entity);</span>
+	}
+
+	@Override
+	public void delete(Long id) {
+<span class="fc" id="L55">		findById(id);</span>
+<span class="fc" id="L56">		repository.deleteById(id);</span>
+		
+<span class="fc" id="L58">	}</span>
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span>attornatus-backend-desafio (27 de set. de 2023 03:21:14)</div></body></html>

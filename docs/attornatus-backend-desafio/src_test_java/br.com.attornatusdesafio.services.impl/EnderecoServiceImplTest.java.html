@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>EnderecoServiceImplTest.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">attornatus-backend-desafio (27 de set. de 2023 03:21:14)</a> &gt; <a href="../../index.html" class="el_group">attornatus-backend-desafio</a> &gt; <a href="../index.html" class="el_bundle">src/test/java</a> &gt; <a href="index.source.html" class="el_package">br.com.attornatusdesafio.services.impl</a> &gt; <span class="el_source">EnderecoServiceImplTest.java</span></div><h1>EnderecoServiceImplTest.java</h1><pre class="source lang-java linenums">package br.com.attornatusdesafio.services.impl;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.modelmapper.ModelMapper;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import br.com.attornatusdesafio.entities.Endereco;
+import br.com.attornatusdesafio.entities.Pessoa;
+import br.com.attornatusdesafio.entities.dtos.PessoaDTO;
+import br.com.attornatusdesafio.entities.enums.TipoEndereco;
+import br.com.attornatusdesafio.repositories.EnderecoRepository;
+import br.com.attornatusdesafio.repositories.PessoaRepository;
+import br.com.attornatusdesafio.services.PessoaService;
+import br.com.attornatusdesafio.services.exceptions.EnderecoException;
+import br.com.attornatusdesafio.services.exceptions.ObjectNotFoundException;
+
+@SpringBootTest
+<span class="fc" id="L37">class EnderecoServiceImplTest {</span>
+
+<span class="fc" id="L39">	private static final Long ID_ENDERECO2 = 2L;</span>
+
+<span class="fc" id="L41">	private static final TipoEndereco TIPO_ENDERECO2 = TipoEndereco.SECUNDARIO;</span>
+
+	private static final String CEP2 = &quot;53432-421&quot;;
+
+<span class="fc" id="L45">	private static final Integer NUMERO2 = 453;</span>
+
+	private static final String CIDADE2 = &quot;São Paulo&quot;;
+
+	private static final String LOGRADOURO2 = &quot;Rua x&quot;;
+
+<span class="fc" id="L51">	private static final Long ID_PESSOA = 1L;</span>
+
+<span class="fc" id="L53">	private static final LocalDate DATA_DE_NASCIMENTO = LocalDate.of(2003, 6, 26);</span>
+
+	private static final String NOME_PESSOA = &quot;Mateus&quot;;
+
+<span class="fc" id="L57">	private static final TipoEndereco TIPO_ENDERECO1 = TipoEndereco.PRINCIPAL;</span>
+
+	private static final String CIDADE1 = &quot;Curitiba&quot;;
+
+<span class="fc" id="L61">	private static final Integer NUMERO1 = 40;</span>
+
+	private static final String CEP1 = &quot;34567-890&quot;;
+
+<span class="fc" id="L65">	private static final Long ID_ENDERECO1 = 1L;</span>
+
+<span class="fc" id="L67">	private static final String LOGRADOURO1 = &quot;Rua D&quot;;</span>
+
+	@InjectMocks
+	private EnderecoServiceImpl service;
+
+	@Mock
+	private ModelMapper mapper;
+
+	@Mock
+	private EnderecoRepository repository;
+
+	@Mock
+	private PessoaRepository pessoaRepository;
+
+	@Mock
+	private PessoaService pessoaService;
+
+	private Endereco endereco1;
+
+	private Endereco endereco2;
+
+	private Pessoa pessoa;
+
+	private PessoaDTO pessoaDTO1;
+
+	private Optional&lt;Endereco&gt; enderecoOptional;
+
+	@BeforeEach
+	void setUp() throws Exception {
+<span class="fc" id="L96">		MockitoAnnotations.openMocks(this);</span>
+<span class="fc" id="L97">		start();</span>
+<span class="fc" id="L98">	}</span>
+
+	@Test
+	void whenFindByIdThenReturnAnEnderecoInstance() {
+<span class="fc" id="L102">		when(repository.findById(anyLong())).thenReturn(enderecoOptional);</span>
+
+<span class="fc" id="L104">		Endereco response = service.findById(ID_ENDERECO1);</span>
+
+<span class="fc" id="L106">		assertNotNull(response);</span>
+<span class="fc" id="L107">		assertEquals(Endereco.class, response.getClass());</span>
+<span class="fc" id="L108">		assertEquals(ID_ENDERECO1, response.getId());</span>
+<span class="fc" id="L109">		assertEquals(LOGRADOURO1, response.getLogradouro());</span>
+<span class="fc" id="L110">		assertEquals(CIDADE1, response.getCidade());</span>
+<span class="fc" id="L111">		assertEquals(NUMERO1, response.getNumero());</span>
+<span class="fc" id="L112">		assertEquals(CEP1, response.getCep());</span>
+<span class="fc" id="L113">		assertEquals(TIPO_ENDERECO1, response.getTipoEndereco());</span>
+
+<span class="fc" id="L115">	}</span>
+
+	@Test
+	void whenFindByIdThenReturnAnObjectNotFoundException() {
+<span class="fc" id="L119">		when(repository.findById(ID_ENDERECO1)).thenReturn(enderecoOptional);</span>
+		
+		try {
+<span class="nc" id="L122">			service.findById(ID_ENDERECO2);</span>
+			
+<span class="pc" id="L124">		}catch(Exception e) {</span>
+<span class="fc" id="L125">			assertEquals(ObjectNotFoundException.class, e.getClass());</span>
+<span class="fc" id="L126">			assertEquals(&quot;Objeto Não Encontrado! Id: &quot; + ID_ENDERECO2 + &quot;, Tipo: &quot; + Endereco.class.getName(), e.getMessage());</span>
+		}
+<span class="fc" id="L128">	}</span>
+
+	@Test
+	void whenFindByEnderecoPrincipalThenReturnAnEnderecoInstance() {
+<span class="fc" id="L132">		when(repository.findAllByPessoa(anyLong())).thenReturn(new ArrayList&lt;&gt;(List.of(endereco1, endereco2)));</span>
+	
+<span class="fc" id="L134">		Endereco response = service.findByEnderecoPrincipal(ID_PESSOA);</span>
+
+<span class="fc" id="L136">		assertNotNull(response);</span>
+<span class="fc" id="L137">		assertEquals(Endereco.class, response.getClass());</span>
+<span class="fc" id="L138">		assertEquals(ID_ENDERECO1, response.getId());</span>
+<span class="fc" id="L139">		assertEquals(LOGRADOURO1, response.getLogradouro());</span>
+<span class="fc" id="L140">		assertEquals(CIDADE1, response.getCidade());</span>
+<span class="fc" id="L141">		assertEquals(NUMERO1, response.getNumero());</span>
+<span class="fc" id="L142">		assertEquals(CEP1, response.getCep());</span>
+<span class="fc" id="L143">		assertEquals(TIPO_ENDERECO1, response.getTipoEndereco());</span>
+
+<span class="fc" id="L145">	}</span>
+
+	@Test
+	void whenFindByEnderecoPrincipalThenReturnAnEnderecoException() {
+<span class="fc" id="L149">		when(repository.findAllByPessoa(anyLong())).thenReturn(new ArrayList&lt;&gt;(List.of(endereco2)));</span>
+	
+		try {
+<span class="nc" id="L152">				service.findByEnderecoPrincipal(ID_PESSOA);</span>
+		
+<span class="pc" id="L154">		}catch(Exception e) {</span>
+<span class="fc" id="L155">			assertEquals(EnderecoException.class, e.getClass());</span>
+<span class="fc" id="L156">			assertEquals(&quot;Você não possui um endereço principal&quot;, e.getMessage());</span>
+		}
+
+<span class="fc" id="L159">	}</span>
+
+	@Test
+	void whenFindAllThenReturnAnListOfEnderecos() {
+<span class="fc" id="L163">		when(repository.findAllByPessoa(anyLong())).thenReturn(List.of(endereco1));</span>
+		
+<span class="fc" id="L165">		List&lt;Endereco&gt; response = service.findAllByPessoa(ID_PESSOA);</span>
+		
+<span class="fc" id="L167">		assertNotNull(response);</span>
+<span class="fc" id="L168">		assertEquals(1, response.size());</span>
+<span class="fc" id="L169">		assertEquals(Endereco.class, response.get(0).getClass());</span>
+<span class="fc" id="L170">		assertEquals(ID_ENDERECO1, response.get(0).getId());</span>
+<span class="fc" id="L171">		assertEquals(LOGRADOURO1, response.get(0).getLogradouro());</span>
+<span class="fc" id="L172">		assertEquals(CIDADE1, response.get(0).getCidade());</span>
+<span class="fc" id="L173">		assertEquals(NUMERO1, response.get(0).getNumero());</span>
+<span class="fc" id="L174">		assertEquals(CEP1, response.get(0).getCep());</span>
+<span class="fc" id="L175">		assertEquals(TIPO_ENDERECO1, response.get(0).getTipoEndereco());</span>
+				
+<span class="fc" id="L177">	}</span>
+
+	@Test
+	void whenCreateThenReturnSucess() {
+		
+<span class="fc" id="L182">		when(pessoaService.findById(anyLong())).thenReturn(pessoa);</span>
+<span class="fc" id="L183">		when(repository.save(any())).thenReturn(endereco2);</span>
+<span class="fc" id="L184">		when(mapper.map(any(), any())).thenReturn(pessoaDTO1);</span>
+		
+<span class="fc" id="L186">		assertNotNull(pessoa);</span>
+		
+<span class="fc" id="L188">		Endereco response = service.create(ID_PESSOA, endereco2);</span>
+		
+<span class="fc" id="L190">		assertNotNull(response);</span>
+<span class="fc" id="L191">		assertEquals(Endereco.class, response.getClass());</span>
+<span class="fc" id="L192">		assertEquals(ID_ENDERECO2, response.getId());</span>
+<span class="fc" id="L193">		assertEquals(LOGRADOURO2, response.getLogradouro());</span>
+<span class="fc" id="L194">		assertEquals(CIDADE2, response.getCidade());</span>
+<span class="fc" id="L195">		assertEquals(NUMERO2, response.getNumero());</span>
+<span class="fc" id="L196">		assertEquals(CEP2, response.getCep());</span>
+<span class="fc" id="L197">		assertEquals(TIPO_ENDERECO2, response.getTipoEndereco());</span>
+		
+<span class="fc" id="L199">	}</span>
+
+	@Test
+	void whenCreateThenReturnAnEnderecoException() {
+		
+<span class="fc" id="L204">		when(pessoaService.findById(anyLong())).thenReturn(pessoa);</span>
+<span class="fc" id="L205">		when(repository.save(any())).thenReturn(endereco2);</span>
+<span class="fc" id="L206">		endereco2.setTipoEndereco(TipoEndereco.PRINCIPAL);</span>
+		
+		
+		try {
+			
+<span class="nc" id="L211">			service.create(ID_PESSOA, endereco2);</span>
+			
+			
+<span class="pc" id="L214">		}catch(Exception e) {</span>
+<span class="fc" id="L215">			assertEquals(EnderecoException.class, e.getClass());</span>
+<span class="fc" id="L216">			assertEquals(&quot;Já existe um endereço principal definido&quot;, e.getMessage());</span>
+			
+		}
+	
+<span class="fc" id="L220">	}</span>
+
+	@Test
+	void whenUpdateThenReturnSucess() {
+<span class="fc" id="L224">		when(pessoaService.findById(anyLong())).thenReturn(pessoa);</span>
+<span class="fc" id="L225">		when(repository.save(any())).thenReturn(endereco1);</span>
+		
+		
+<span class="fc" id="L228">		assertNotNull(pessoa);</span>
+		
+<span class="fc" id="L230">		Endereco response = service.update(ID_PESSOA, ID_ENDERECO1, endereco1);</span>
+		
+<span class="fc" id="L232">		assertNotNull(response);</span>
+<span class="fc" id="L233">		assertEquals(Endereco.class, response.getClass());</span>
+<span class="fc" id="L234">		assertEquals(ID_ENDERECO1, response.getId());</span>
+<span class="fc" id="L235">		assertEquals(LOGRADOURO1, response.getLogradouro());</span>
+<span class="fc" id="L236">		assertEquals(CIDADE1, response.getCidade());</span>
+<span class="fc" id="L237">		assertEquals(NUMERO1, response.getNumero());</span>
+<span class="fc" id="L238">		assertEquals(CEP1, response.getCep());</span>
+		
+<span class="fc" id="L240">	}</span>
+
+	@Test
+	void whenUpdateThenReturnAnEnderecoException() {
+<span class="fc" id="L244">		when(pessoaService.findById(anyLong())).thenReturn(pessoa);</span>
+<span class="fc" id="L245">		when(repository.save(any())).thenReturn(endereco2);</span>
+		
+		try {
+<span class="fc" id="L248">			endereco2.setTipoEndereco(TipoEndereco.PRINCIPAL);</span>
+<span class="fc" id="L249">			pessoa.addEndereco(endereco2);</span>
+<span class="nc" id="L250">			service.update(ID_PESSOA, ID_ENDERECO2, endereco2);</span>
+			
+			
+<span class="pc" id="L253">		}catch(Exception e) {</span>
+<span class="fc" id="L254">			assertEquals(EnderecoException.class, e.getClass());</span>
+<span class="fc" id="L255">			assertEquals(&quot;Já existe um endereço principal definido&quot;, e.getMessage());</span>
+			
+		}
+		
+<span class="fc" id="L259">	}</span>
+
+	@Test
+	void whenUpdateThenReturnAnObjectNotFoundException() {
+<span class="fc" id="L263">		when(pessoaService.findById(anyLong())).thenReturn(pessoa);</span>
+<span class="fc" id="L264">		when(repository.save(any())).thenReturn(endereco2);</span>
+		
+		try {
+			
+<span class="nc" id="L268">			service.update(ID_PESSOA, ID_ENDERECO2, endereco2);</span>
+			
+			
+<span class="pc" id="L271">		}catch(Exception e) {</span>
+<span class="fc" id="L272">			assertEquals(ObjectNotFoundException.class, e.getClass());</span>
+<span class="fc" id="L273">			assertEquals(&quot;Objeto Não Encontrado! Id: &quot; + ID_ENDERECO2 + &quot;, Tipo: &quot; + Endereco.class.getName(), e.getMessage());</span>
+			
+		}
+<span class="fc" id="L276">	}</span>
+
+	@Test
+	void whenDeleteThenReturnSucess() {
+<span class="fc" id="L280">		when(pessoaService.findById(anyLong())).thenReturn(pessoa);</span>
+<span class="fc" id="L281">		doNothing().when(repository).deleteById(anyLong());</span>
+		
+<span class="fc" id="L283">		service.delete(ID_PESSOA, ID_ENDERECO1);</span>
+		
+<span class="fc" id="L285">		verify(repository, times(1)).deleteById(anyLong());;</span>
+		
+<span class="fc" id="L287">	}</span>
+
+	@Test
+	void whenDeleteThenReturnAnObjectNotFoundException() {
+<span class="fc" id="L291">		when(pessoaService.findById(anyLong())).thenReturn(pessoa);</span>
+		
+		try {
+		
+<span class="nc" id="L295">			service.delete(ID_PESSOA, ID_ENDERECO2);</span>
+		
+<span class="pc" id="L297">		}catch(Exception e) {</span>
+<span class="fc" id="L298">			assertEquals(ObjectNotFoundException.class, e.getClass());</span>
+<span class="fc" id="L299">			assertEquals(&quot;Objeto Não Encontrado! Id: &quot; + ID_ENDERECO2 + &quot;, Tipo: &quot; + Endereco.class.getName(), e.getMessage());</span>
+		}
+<span class="fc" id="L301">	}</span>
+
+	private void start() {
+
+<span class="fc" id="L305">		endereco1 = new Endereco(ID_ENDERECO1, LOGRADOURO1, CEP1, NUMERO1, CIDADE1, TIPO_ENDERECO1);</span>
+<span class="fc" id="L306">		endereco2 = new Endereco(ID_ENDERECO2, LOGRADOURO2, CEP2, NUMERO2, CIDADE2, TIPO_ENDERECO2);</span>
+<span class="fc" id="L307">		pessoa = new Pessoa(ID_PESSOA, NOME_PESSOA, DATA_DE_NASCIMENTO, new ArrayList&lt;&gt;(Arrays.asList(endereco1)));</span>
+<span class="fc" id="L308">		pessoaDTO1 = new PessoaDTO(ID_PESSOA, NOME_PESSOA, DATA_DE_NASCIMENTO);</span>
+<span class="fc" id="L309">		enderecoOptional = Optional.of(new Endereco(ID_ENDERECO1, LOGRADOURO1, CEP1, NUMERO1, CIDADE1, TIPO_ENDERECO1));</span>
+<span class="fc" id="L310">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span>attornatus-backend-desafio (27 de set. de 2023 03:21:14)</div></body></html>
