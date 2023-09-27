@@ -7,6 +7,8 @@ import br.com.attornatusdesafio.entities.Endereco;
 public interface EnderecoService {
 
 	List<Endereco> findAllByPessoa(Long idPessoa);
+	
+	Endereco findById(Long id);
 
 	Endereco findByEnderecoPrincipal(Long idPessoa);
 

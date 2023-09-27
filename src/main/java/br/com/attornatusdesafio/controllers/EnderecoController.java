@@ -29,7 +29,7 @@ public class EnderecoController {
 	private EnderecoService service;
 
 	@GetMapping
-	public ResponseEntity<List<Endereco>> findAll(@PathVariable Long idPessoa) {
+	public ResponseEntity<List<Endereco>> findAllByPessoa(@PathVariable Long idPessoa) {
 
 		List<Endereco> enderecoList = service.findAllByPessoa(idPessoa);
 

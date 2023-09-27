@@ -3,11 +3,13 @@ package br.com.attornatusdesafio.services.impl;
 import java.util.List;
 import java.util.Optional;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.attornatusdesafio.entities.Endereco;
 import br.com.attornatusdesafio.entities.Pessoa;
+import br.com.attornatusdesafio.entities.dtos.PessoaDTO;
 import br.com.attornatusdesafio.entities.enums.TipoEndereco;
 import br.com.attornatusdesafio.repositories.EnderecoRepository;
 import br.com.attornatusdesafio.services.EnderecoService;
@@ -23,12 +25,16 @@ public class EnderecoServiceImpl implements EnderecoService {
 
 	@Autowired
 	private PessoaService pessoaService;
+	
+	@Autowired
+	private ModelMapper mapper;
 
 	@Override
 	public List<Endereco> findAllByPessoa(Long idPessoa) {
 		return repository.findAllByPessoa(idPessoa);
 	}
-
+	
+	@Override
 	public Endereco findById(Long id) {
 		Optional<Endereco> obj = repository.findById(id);
 
@@ -55,8 +61,8 @@ public class EnderecoServiceImpl implements EnderecoService {
 		endereco = repository.save(endereco);
 
 		pessoa.addEndereco(endereco);
-
-		pessoaService.update(idPessoa, pessoa);
+		
+		pessoaService.update(idPessoa, this.mapper.map(pessoa, PessoaDTO.class));
 
 		return endereco;
 	}
