@@ -10,6 +10,12 @@ import br.com.attornatusdesafio.services.CepValidator;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 
+/*A anotação @Cep, é para indicar que o atributo cep da classe Endereço possui uma
+* verificação para saber se ele esta correto ou não.
+* 
+* A implementação esta na classe CepValidator
+*/
+ 
 @Documented
 @Target({ElementType.FIELD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
