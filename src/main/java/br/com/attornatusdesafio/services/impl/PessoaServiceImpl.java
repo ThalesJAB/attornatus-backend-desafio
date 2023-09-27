@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.attornatusdesafio.entities.Pessoa;
+import br.com.attornatusdesafio.entities.dtos.PessoaDTO;
 import br.com.attornatusdesafio.repositories.PessoaRepository;
 import br.com.attornatusdesafio.services.PessoaService;
 import br.com.attornatusdesafio.services.exceptions.ObjectNotFoundException;
@@ -16,6 +17,7 @@ public class PessoaServiceImpl implements PessoaService {
 	
 	@Autowired
 	private PessoaRepository repository;
+	
 
 	@Override
 	public List<Pessoa> findAll() {
@@ -31,12 +33,15 @@ public class PessoaServiceImpl implements PessoaService {
 	}
 
 	@Override
-	public Pessoa create(Pessoa obj) {
-		return repository.save(obj);
+	public Pessoa create(PessoaDTO obj) {
+		Pessoa novaPessoa = new Pessoa();
+		novaPessoa.setNome(obj.getNome());
+		novaPessoa.setDataNascimento(obj.getDataNascimento());
+		return repository.save(novaPessoa);
 	}
 
 	@Override
-	public Pessoa update(Long id, Pessoa obj) {
+	public Pessoa update(Long id, PessoaDTO obj) {
 		Pessoa entity = findById(id);
 
 		entity.setDataNascimento(obj.getDataNascimento());

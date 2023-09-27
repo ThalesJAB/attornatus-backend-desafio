@@ -3,6 +3,7 @@ package br.com.attornatusdesafio.services;
 import java.util.List;
 
 import br.com.attornatusdesafio.entities.Pessoa;
+import br.com.attornatusdesafio.entities.dtos.PessoaDTO;
 
 public interface PessoaService {
 
@@ -10,9 +11,9 @@ public interface PessoaService {
 
 	Pessoa findById(Long id);
 
-	Pessoa create(Pessoa obj);
+	Pessoa create(PessoaDTO obj);
 
-	Pessoa update(Long id, Pessoa obj);
+	Pessoa update(Long id, PessoaDTO obj);
 
 	void delete(Long id);
 	
