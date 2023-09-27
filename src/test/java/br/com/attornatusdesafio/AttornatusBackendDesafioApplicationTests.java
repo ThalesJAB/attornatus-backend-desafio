@@ -8,6 +8,7 @@ class AttornatusBackendDesafioApplicationTests {
 
 	@Test
 	void contextLoads() {
+		AttornatusBackendDesafioApplication.main(new String[] {});
 	}
 
 }
